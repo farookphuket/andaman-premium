@@ -1,5 +1,5 @@
 # andaman-premium
-Andaman Premium - Gemini วินัย 
+Andaman Premium - Qwen AI วินัย 
 
 
 =========================================================================================
