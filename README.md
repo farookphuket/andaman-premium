@@ -2,6 +2,27 @@
 Andaman Premium - Qwen AI วินัย 
 
 
+--- 
+## 📝 สรุปการทำงานและแก้ไขปัญหา (Project Log) โดยวินัย Qwen
+
+| ปัญหา | สาเหตุ | วิธีแก้ไข | สถานะ | บันทึกเพิ่มเติม |
+|-- |-- |-- |-- |-- |
+| **SEO Dynamic Title ไม่เปลี่ยน** | ยังไม่มีการตั้งค่า Metadata ตาม Locale | เพิ่ม `generateMetadata` ใน `[locale]/layout.tsx` และหน้า Page ย่อยๆ | ✅ เสร็จแล้ว | ใช้ `next-intl/server` ดึง Translation |
+| **หน้า 404 (not-found.tsx) หายวูบ** | เกิด Hydration Error เพราะเป็น `"use client"` + มี Style ที่ซับซ้อน | เปลี่ยนเป็น **Server Component** (ลบ `"use client"`) และย้าย CSS Animation ไป `globals.css` | ✅ เสร็จแล้ว | ใช้ `suppressHydrationWarning` ใน Root ช่วยได้ |
+| **เปลี่ยนภาษาแล้ว URL ผิดเพี้ยน (เช่น /th/en/en)** | Syntax error ใน `LanguageSwitcher.tsx` (มีช่องว่างในสตริง `"th "`) และการใช้ Operator ผิด (`& &`) | เขียนโค้ดใหม่ให้สะอาด (Clean Code) ลบช่องว่าง และใช้ `router.push(pathname, { locale })` | ✅ เสร็จแล้ว | ระวังเรื่อง Syntax error เล็กๆ ทำให้พังทั้งระบบ |
+| **Hydration Error: Font mismatch** | โหลด Font `Inter` ซ้ำกัน หรือโหลดผิดที่ (Root vs Locale) | ย้ายการโหลด Font ไปที่ `src/app/layout.tsx` (Root Layout) เท่านั้น | ✅ เสร็จแล้ว | ใช้ CSS Variables (`--font-inter`) เชื่อมกับ Tailwind |
+| **Route Conflict Error** | มีไฟล์ `[[...slug]]/page.tsx` ขัดแย้งกับ `page.tsx` ปกติ | ลบไฟล์ Catch-all ที่ไม่จำเป็นออก หรือย้ายไปไว้ถูกกลุ่ม (Route Group) | ✅ เสร็จแล้ว | Next.js 16 ไม่ชอบความกำกวมของ Route |
+| **ข้อความบางส่วนไม่เปลี่ยนภาษา** | Hardcode ข้อความภาษาไทยลงไปในโค้ดโดยตรง | เปลี่ยนข้อความเป็น Key (เช่น `t("home.title")`) และเติม Key ในไฟล์ `messages/*.json` | ✅ เสร็จแล้ว | ตรวจสอบทั้ง `th.json`, `en.json`, `zh.json` |
+| **Featured Tours เป็นข้อมูลจำลอง** | ยังไม่ได้ดึงข้อมูลจาก API จริง | เปลี่ยนจากการ Hardcode array เป็นดึงข้อมูลผ่าน `toursApi.getAll` ใน Parent Component | ✅ เสร็จแล้ว | ส่ง Props `tours` เข้าไปให้ Component แสดงผล |
+
+---
+
+### 💡 บทเรียนสำคัญ (Key Takeaways)
+1. **Syntax Matters:** ช่องว่างเล็กๆ ใน String (`"th "`) หรือการพิมพ์ผิด (`& &` แทน `&&`) สามารถทำให้ Logic การเปลี่ยนภาษาพังทั้งระบบได้
+2. **Server vs Client:** หน้าสำคัญๆ เช่น `not-found` ควรเป็น Server Component เพื่อป้องกัน Hydration Error และทำ SEO ได้ดีกว่า
+3. **Clean Routing:** อย่าสร้าง Route ที่ซ้ำซ้อนกัน (Overlapping routes) ให้ Middleware หรือ `navigation.ts` จัดการ Locale prefix จะปลอดภัยที่สุด
+
+
 ---
 
 ## 26 May 2026 📝 Dev Log: ฟอร์มจองทัวร์ (BookingTourForm)
