@@ -1,5 +1,5 @@
 # andaman-premium
-Andaman Premium - Qwen AI วินัย 
+Andaman Premium - AI วินัย 
 
 ---
 ## 📝 28 may 2026 (เช้านี้)  สรุปการทำงานและแก้ไขปัญหา (Project Log) โดยวินัย Gemini
